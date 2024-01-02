@@ -19,4 +19,14 @@
     function h($string='') {
         return htmlspecialchars($string);
     }
+
+    function error_404() {
+        header($_SERVER['SERVER_PROTOCOL'] . '404 not found');
+        exit();
+    }
+
+    function error_500() {
+        header($_SERVER['SERVER_PROTOCOL'] . '505 Internal Server Error');
+        exit();
+    }
 ?>
