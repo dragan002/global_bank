@@ -29,4 +29,9 @@
         header($_SERVER['SERVER_PROTOCOL'] . '505 Internal Server Error');
         exit();
     }
+
+    function redirect_to($location) {
+        header("Location: " . $location);
+        exit();
+    }
 ?>
