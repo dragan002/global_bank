@@ -9,8 +9,7 @@
             <h2>Main Menu</h2>
             <ul>
                 <li><a href="subjects/index.php">Subject</a></li>
-                <?php  echo $public_end = strpos($_SERVER['SCRIPT_NAME'], '/public') + 7 . "<br>"; ?>
-                <?php  echo $doc_root;?>
+                <li><a href="pages/index.php">Pages</a></li>
             </ul>
         </div>    
     </div>

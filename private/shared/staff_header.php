@@ -1,5 +1,6 @@
 <?php
     $page_title = $page_title ?? 'Staff menuuuuu';
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
