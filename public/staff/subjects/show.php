@@ -1,8 +1,8 @@
 <?php require_once('../../../private/initialize.php');
 
 
-$id = $_GET['id'] ?? '1'; // PHP > 7.0
-$subject = find_by_id($id);
+$id = $_GET['id'] ?? '1';
+$subject = find_subject_by_id($id);
 
 $page_title = 'Show Page'; 
 include(SHARED_PATH . '/staff_header.php'); ?>

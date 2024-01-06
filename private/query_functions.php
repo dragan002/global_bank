@@ -20,9 +20,8 @@ function find_all_pages() {
     confirm_result_set($result);
     return $result;
 }
-function find_by_id($id) {
+function find_subject_by_id($id) {
     global $db;
-    global $id;
 
     $sql = "SELECT * FROM subjects ";
     $sql .= "WHERE id='" . $id . "'";
@@ -32,4 +31,24 @@ function find_by_id($id) {
     $subject = mysqli_fetch_assoc($result);
     mysqli_free_result($result);
     return $subject;
+}
+function insert_subject($menu_name, $position, $visible) {
+    global $db;
+
+    $sql = "INSERT INTO subjects ";
+    $sql .= "(menu_name, position, visible) ";
+    $sql .= "VALUES ( ";
+    $sql .= "'" . $menu_name . "',";
+    $sql .= "'" . $position . "',";
+    $sql .= "'" . $visible . "'";
+    $sql .= " )";
+    $result = mysqli_query($db, $sql);
+
+    if($result) {
+        return true;
+    } else {
+        echo mysqli_error($db);
+        db_disconnect($db);
+        exit();
+    }
 }
