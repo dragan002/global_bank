@@ -35,7 +35,10 @@ $pages_set = find_all_pages();
     	    <td><?php echo h($page['menu_name']); ?></td>
           <td><a class="action" href="<?php echo url_for('/staff/pages/show.php?id=' . h(u($page['id']))); ?>">View</a></td>
           <td><a class="action" href="<?php echo url_for('staff/pages/edit.php?id=' . h(u($page['id']))); ?>">Edit</a></td>
-          <td><a class="action" href="">Delete</a></td>
+          <td>
+            <a class="action" href="<?php echo url_for('/staff/pages/delete.php?id=' . $page['id']); ?>" 
+            onclick="return confirm('Are you sure you want to delete <?php echo $page['menu_name']; ?>?');">Delete</a>
+          </td>
     	  </tr>
       <?php } ?>
   	</table>

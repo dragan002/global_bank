@@ -2,15 +2,10 @@
 
 require_once('../../../private/initialize.php'); 
 
-$test = $_GET['test'] ?? '';
-
-if($test == '404') {
-    error_404();
-} elseif($test == '500') {
-    error_500();
-} elseif($test == 'redirect') {
-    redirect_to(url_for('/staff/subjects/index.php'));
-} 
+$page = [];
+$page['menu_name'] = $_POST['menu_name'] ?? '';
+$page['position'] = $_POST['position'] ?? '';
+$page['visible'] = $_POST['visible'] ?? '';
 ?>
 
 <?php $page_title = 'Create Pages'; ?>
@@ -25,14 +20,22 @@ if($test == '404') {
 
     <form action="<?php echo url_for('/staff/pages/create.php'); ?>" method="post">
       <dl>
-        <dt>Page Name</dt>
-        <dd><input type="text" name="page_name" value="" /></dd>
+        <dt>Menu Name</dt>
+        <dd><input type="text" name="menu_name" value="" /></dd>
       </dl>
       <dl>
         <dt>Position</dt>
         <dd>
-          <select name="position">
-            <option value="1">1</option>
+        <select name="position">
+            <?php
+              for($i = 1; $i <= page_count($page) + 1 ; $i++) {
+                echo "<option value=\"{$i}\"";
+                if($page['position'] == $i) {
+                  echo " selected";
+                }
+                echo ">{$i}</option>";
+              }
+            ?>
           </select>
         </dd>
       </dl>
@@ -44,7 +47,7 @@ if($test == '404') {
         </dd>
       </dl>
       <div id="operations">
-        <input type="submit" value="Create Pages" />
+        <input type="submit" value="Create Page" />
       </div>
     </form>
 
