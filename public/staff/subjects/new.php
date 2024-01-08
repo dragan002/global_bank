@@ -1,7 +1,11 @@
 <?php
 
 require_once('../../../private/initialize.php'); 
- 
+
+$subject = [];
+$subject['menu_name'] = $_POST['menu_name'] ?? '';
+$subject['position'] = $_POST['position'] ?? '';
+$subject['visible'] = $_POST['visible'] ?? '';
 ?>
 
 <?php $page_title = 'Create Subject'; ?>
@@ -22,8 +26,16 @@ require_once('../../../private/initialize.php');
       <dl>
         <dt>Position</dt>
         <dd>
-          <select name="position">
-            <option value="1">1</option>
+        <select name="position">
+            <?php
+              for($i = 1; $i <= subject_count($subject) + 1 ; $i++) {
+                echo "<option value=\"{$i}\"";
+                if($subject['position'] == $i) {
+                  echo " selected";
+                }
+                echo ">{$i}</option>";
+              }
+            ?>
           </select>
         </dd>
       </dl>
