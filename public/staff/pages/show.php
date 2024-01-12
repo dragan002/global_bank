@@ -6,7 +6,9 @@ $id = $_GET['id'] ?? '1';
 $page = find_pages_by_id($id);
 
 $page_title = 'Show Page'; 
-include(SHARED_PATH . '/staff_header.php'); ?>
+include(SHARED_PATH . '/staff_header.php');
+
+?>
 
 <div id="content">
 
@@ -15,6 +17,12 @@ include(SHARED_PATH . '/staff_header.php'); ?>
   <div class="Pages show">
     <h1>Page <?php echo h($page['menu_name']);?></h1>
     <div class="attributes">
+      <?php $subject = find_subject_by_id($page['subject_id']);
+ ?>
+        <dl>
+            <dt>Subject ID</dt>
+            <dd><?php echo h($subject['menu_name']); ?></dd>
+        </dl>      
         <dl>
             <dt>Menu name</dt>
             <dd><?php echo h($page['menu_name']); ?></dd>
@@ -26,6 +34,10 @@ include(SHARED_PATH . '/staff_header.php'); ?>
         <dl>
             <dt>Visible</dt>
             <dd><?php echo $page['visible'] == '1' ? 'true' : 'false'; ?></dd>
+        </dl>
+        <dl>
+            <dt>Content</dt>
+            <dd><?php echo h($page['content']); ?></dd>
         </dl>
     </div>
   </div>

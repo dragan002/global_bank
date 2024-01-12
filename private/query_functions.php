@@ -47,6 +47,11 @@ function find_pages_by_id($id) {
 function insert_subject($subject) {
     global $db;
 
+    $errors = validate_subject($subject);
+    if(!empty($errors)) {
+        return $errors;
+    }
+
     $sql = "INSERT INTO subjects ";
     $sql .= "(menu_name, position, visible) ";
     $sql .= "VALUES ( ";
@@ -64,8 +69,36 @@ function insert_subject($subject) {
         exit();
     }
 }
+
+function insert_page($page) {
+    global $db;
+
+    $sql = "INSERT INTO pages ";
+    $sql .= "(subject_id, menu_name, position, visible, content) ";
+    $sql .= "VALUES ( ";
+    $sql .= "'" . $page['subject_id'] . "',";
+    $sql .= "'" . $page['menu_name'] . "',";
+    $sql .= "'" . $page['position'] . "',";
+    $sql .= "'" . $page['visible'] . "', ";
+    $sql .= "'" . $page['content'] . "'";
+    $sql .= " )";
+    $result = mysqli_query($db, $sql);
+
+    if($result) {
+        return true;
+    } else {
+        echo mysqli_error($db);
+        db_disconnect($db);
+        exit();
+    }
+}
 function update_subject($subject) {
     global $db;
+
+    $errors = validate_subject($subject);
+    if(!empty($errors)) {
+        return $errors;
+    }
 
     $sql = "UPDATE subjects SET ";
     $sql .= "menu_name='" . $subject['menu_name'] . "', ";
@@ -88,9 +121,11 @@ function update_page($page) {
     global $db;
 
     $sql = "UPDATE pages SET ";
+    $sql .= "subject_id='" . $page['subject_id'] . "', ";
     $sql .= "menu_name='" . $page['menu_name'] . "', ";
     $sql .= "position='" . $page['position'] . "', ";
-    $sql .= "visible='" . $page['visible'] . "' ";
+    $sql .= "visible='" . $page['visible'] . "',";
+    $sql .= "content='" . $page['content'] . "'";
     $sql .= "WHERE id=" . $page['id'] . " ";
     $sql .= "LIMIT 1";
 
@@ -154,3 +189,36 @@ function delete_page($page) {
         exit();
     }
 }
+
+function validate_subject($subject) {
+
+    $errors = [];
+    
+    // menu_name
+    if(is_blank($subject['menu_name'])) {
+      $errors[] = "Name cannot be blank.";
+    }
+    if(!has_length($subject['menu_name'], ['min' => 2, 'max' => 255])) {
+      $errors[] = "Name must be between 2 and 255 characters.";
+    }
+  
+    // position
+    // Make sure we are working with an integer
+    $postion_int = (int) $subject['position'];
+    if($postion_int <= 0) {
+      $errors[] = "Position must be greater than zero.";
+    }
+    if($postion_int > 999) {
+      $errors[] = "Position must be less than 999.";
+    }
+  
+    // visible
+    // Make sure we are working with a string
+    $visible_str = (string) $subject['visible'];
+    if(!has_inclusion_of($visible_str, ["0","1"])) {
+      $errors[] = "Visible must be true or false.";
+    }
+  
+    return $errors;
+  }
+  
