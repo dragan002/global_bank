@@ -44,10 +44,11 @@ if (is_post_request()) {
         <dt>Position</dt>
         <dd>
         <select name="position">
-            <?php
-              for($i = 1; $i <= subject_count($subject) + 1 ; $i++) {
+        <?php
+              $subject_count = subject_count($subject);
+              for ($i = 1; $i <= $subject_count + 1; $i++) {
                 echo "<option value=\"{$i}\"";
-                if($subject['position'] == $i) {
+                if ($subject['position'] == $i) {
                   echo " selected";
                 }
                 echo ">{$i}</option>";

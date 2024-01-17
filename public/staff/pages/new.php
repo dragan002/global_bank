@@ -2,6 +2,9 @@
 
 require_once('../../../private/initialize.php');
 
+
+  $errors = [];
+
 if(is_post_request()) {
 
   $page = [];
@@ -10,10 +13,16 @@ if(is_post_request()) {
   $page['position'] = $_POST['position'] ?? '';
   $page['visible'] = $_POST['visible'] ?? '';
   $page['content'] = $_POST['content'] ?? '';
+  
 
+  $errors = validate_page($page);
+  if(!empty($errors)) {
+    array_push($errors, "Please fix the following errors");
+  } else {
   $result = insert_page($page);
   $new_id = mysqli_insert_id($db);
   redirect_to(url_for('/staff/pages/show.php?id=' . $new_id));
+  }
 
 } else {
 
@@ -24,12 +33,11 @@ if(is_post_request()) {
   $page['visible'] = '';
   $page['content'] = '';
 
-  $page_set = find_all_pages();
-  $page_count = mysqli_num_rows($page_set) + 1;
-  mysqli_free_result($page_set);
+  // $page_set = find_all_pages();
+  // $page_count = mysqli_num_rows($page_set) + 1;
+  // mysqli_free_result($page_set);
 
 }
-
 ?>
 
 <?php $page_title = 'Create Page'; ?>
@@ -41,7 +49,7 @@ if(is_post_request()) {
 
   <div class="page new">
     <h1>Create Page</h1>
-
+    <?php echo join("<br>", $errors); ?>
     <form action="<?php echo url_for('/staff/pages/new.php'); ?>" method="post">
       <dl>
         <dt>Subject</dt>
@@ -70,7 +78,8 @@ if(is_post_request()) {
         <dd>
           <select name="position">
             <?php
-              for($i=1; $i <= $page_count; $i++) {
+              $pages_count = page_count($page);
+              for($i=1; $i <= $pages_count + 1; $i++) {
                 echo "<option value=\"{$i}\"";
                 if($page["position"] == $i) {
                   echo " selected";
